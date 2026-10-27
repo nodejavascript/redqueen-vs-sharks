@@ -331,7 +331,7 @@
   </a>
   <nav>
     <a href="#scr-board">High scores</a>
-    <a href="https://github.com/nodejavascript/redqueen-vs-sharks" rel="noopener"><svg class="gh-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="11" height="11" style="vertical-align:-1px;margin-right:4px"><path d="M12 2.4l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.6 6.1 20.7l1.2-6.6L2.4 9.4l6.7-.9z" fill="#ffcf6b"/></svg>Source</a>
+    <a href="https://github.com/nodejavascript/redqueen-vs-sharks" rel="noopener"><svg class="gh-star" fill="#ffcf6b" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="11" height="11" style="vertical-align:-1px;margin-right:4px"><path d="M12 2.4l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.6 6.1 20.7l1.2-6.6L2.4 9.4l6.7-.9z" fill="#ffcf6b"/></svg>Source</a>
   </nav>
 </header>
 
@@ -435,6 +435,34 @@
     </div>
   </div>
 
+  <!-- privacy — part 4 wants an in-page #privacy, not only a separate document -->
+  <div class="screen" id="privacy">
+    <div class="card">
+      <h2 class="screenhead">Privacy</h2>
+      <div class="sub">three letters and a score · nothing else</div>
+      <div class="whylede">
+        <p><b>The honest summary:</b> this game stores three initials, a score and the moment it was
+        scored — and only if you choose to enter initials at all. No account, no email, no cookie, no
+        tracking script, and nothing loaded from another origin.</p>
+        <p>One value stays in your browser: your best score on this device. Clearing site data removes it.</p>
+        <p>No analytics script loads in this page, no advertising, no third-party script of any kind —
+        the game engine is served from this site. The server keeps a request log, as every web
+        server does, and it is used to keep the site working, not to build a record of who plays.</p>
+        <p>This is one of the <a href="https://nodejavascript.com/">nodejavascript.com</a> family,
+        built and run by George Fielder in Hamilton, Ontario, Canada. The code is public at
+        <a href="https://github.com/nodejavascript/redqueen-vs-sharks" rel="noopener"><svg class="gh-star" fill="#ffcf6b" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="11" height="11" style="vertical-align:-1px;margin-right:4px"><path d="M12 2.4l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.6 6.1 20.7l1.2-6.6L2.4 9.4l6.7-.9z"/></svg>github.com/nodejavascript/redqueen-vs-sharks</a>,
+        so every claim here can be checked against it.</p>
+        <p><b>Removing a score:</b> because a row carries nothing that identifies you, it cannot be
+        found by looking for you — write to
+        <a href="mailto:antitomato@gmail.com">antitomato@gmail.com</a> with the initials and the score
+        and the row is deleted.</p>
+      </div>
+      <div class="btns">
+        <button id="btn-privacy-close">Back to the pier</button>
+      </div>
+    </div>
+  </div>
+
   <!-- scoreboard -->
   <div class="screen" id="scr-board">
     <div class="card">
@@ -474,8 +502,8 @@
         </svg></span>
     <span><b>redqueen-vs-sharks</b> · <a href="https://nodejavascript.com/">nodejavascript.com</a></span>
   </div>
-  <p><a href="/privacy">Privacy</a></p>
-  <p><a href="https://github.com/nodejavascript/redqueen-vs-sharks" rel="noopener"><svg class="gh-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="12" height="12" style="vertical-align:-1px;margin-right:5px"><path d="M12 2.4l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.6 6.1 20.7l1.2-6.6L2.4 9.4l6.7-.9z" fill="#ffcf6b"/></svg>github.com/nodejavascript/redqueen-vs-sharks</a></p>
+  <p><a href="#privacy">Privacy</a></p>
+  <p><a href="https://github.com/nodejavascript/redqueen-vs-sharks" rel="noopener"><svg class="gh-star" fill="#ffcf6b" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="12" height="12" style="vertical-align:-1px;margin-right:5px"><path d="M12 2.4l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.6 6.1 20.7l1.2-6.6L2.4 9.4l6.7-.9z" fill="#ffcf6b"/></svg>github.com/nodejavascript/redqueen-vs-sharks</a></p>
   <p class="footer-copy">© 2026 redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com</p>
 </footer>
 </body>

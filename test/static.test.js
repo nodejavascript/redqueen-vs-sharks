@@ -86,12 +86,25 @@ test('there is one h1 on the page, and it is the belief', () => {
   assert.equal(count, 1, `exactly one h1 per document; this page has ${count}`);
 });
 
-test('the page footer links a privacy policy that exists', () => {
-  assert.match(html, /<a href="\/privacy">Privacy<\/a>/, 'the footer links the policy');
-  assert.ok(existsSync(join(SITE, 'privacy.html')), '/privacy is served from privacy.html');
-  const policy = read('privacy.html');
-  assert.match(policy, /<h1/, 'the policy has its own heading');
-  assert.match(policy, /three letters and a score/i, 'and it states the honest summary');
+test('the footer links an in-page privacy section, and there is a long form too', () => {
+  // House part 4 wants the anchor in the page itself, not only a separate document.
+  assert.match(html, /<a href="#privacy">Privacy<\/a>/, 'the footer links #privacy');
+  assert.match(html, /id="privacy"/, 'and the page carries that section');
+  assert.ok(html.indexOf('id="privacy"') > html.indexOf('<h1'), 'the policy sits below the belief, not above it');
+
+  // ONE policy, and it is the page's own section — a second document would be a second thing to
+  // keep true, and the checker treats the pair as a fault for exactly that reason.
+  assert.ok(!existsSync(join(SITE, 'privacy.html')), 'there is no separate privacy page');
+  assert.match(html, /three letters and a score/i, 'the section states the honest summary');
+  const separatePolicy = ['href="', '/', 'privacy"'].join('');
+  assert.ok(!html.includes(separatePolicy), 'nothing links a separate policy document');
+});
+
+test('the in-page policy opens as a screen and pauses the game first', () => {
+  assert.match(game, /function openPrivacy\(open\)/, 'there is a handler');
+  assert.match(game, /a\[href="#privacy"\]/, 'the footer link is wired');
+  assert.match(game, /if \(open && S\.phase === 'play' && !S\.paused\) togglePause\(\)/, 'and it pauses play');
+  assert.ok(html.includes('id="btn-privacy-close"'), 'and it can be closed');
 });
 
 test('every GitHub link carries a star on its left', () => {

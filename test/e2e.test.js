@@ -48,8 +48,16 @@ before(async () => {
 
 after(async () => {
   await browser?.close();
-  server?.kill();
-  if (dataDir) rmSync(dataDir, { recursive: true, force: true });
+  // The server writes the board on SIGTERM, so the directory cannot be removed until that process
+  // has actually exited — deleting it first is a race that fails the run after every test has
+  // passed, which is the most misleading green-to-red there is.
+  if (server && server.exitCode === null) {
+    await new Promise((resolve) => {
+      server.once('exit', resolve);
+      server.kill('SIGTERM');
+    });
+  }
+  if (dataDir) rmSync(dataDir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
 
 /** A fresh browser context, so nothing like localStorage leaks between tests. */

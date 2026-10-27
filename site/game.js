@@ -463,6 +463,15 @@ function pickShark(ndc) {
 }
 
 /* ------------------------------------------------------------------ shooting */
+// The policy is part of this page (house part 4), so opening it is a screen like any other — and
+// the game pauses first, because letting sharks keep shooting at somebody who is reading about
+// privacy would be a joke at their expense.
+function openPrivacy(open) {
+  if (open && S.phase === 'play' && !S.paused) togglePause();
+  if (open) show($('#privacy'));
+  else show(null);
+}
+
 function togglePause() {
   S.paused = !S.paused;
   el.pause.classList.toggle('on', S.paused);
@@ -1206,7 +1215,12 @@ if (el.vol) {
   el.vol.addEventListener('input', onVol);
   el.vol.addEventListener('change', onVol);
   // the arrow keys belong to the queen while a level is running
-  el.vol.addEventListener('keydown', (e) => {
+  $('#btn-privacy-close').addEventListener('click', () => openPrivacy(false));
+for (const link of document.querySelectorAll('a[href="#privacy"]')) {
+  link.addEventListener('click', (event) => { event.preventDefault(); openPrivacy(true); });
+}
+
+el.vol.addEventListener('keydown', (e) => {
     if (e.key.startsWith('Arrow') || e.code === 'Space') e.stopPropagation();
   });
   el.vol.addEventListener('pointerdown', (e) => e.stopPropagation());
