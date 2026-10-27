@@ -208,13 +208,17 @@ test('pause is wired to P and announced on screen', () => {
 /* ------------------------------------------------------------------ assets and the icon set */
 
 test('every icon the head declares exists on disk', () => {
-  for (const name of ['favicon-180.png', 'favicon-32.png', 'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'android-chrome-192x192.png', 'android-chrome-512x512.png']) {
+  for (const name of ['favicon-192.png', 'favicon-180.png', 'favicon-32.png', 'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'android-chrome-192x192.png', 'android-chrome-512x512.png']) {
     assert.ok(existsSync(join(SITE, name)), `${name} is declared in the head or the manifest, so it must exist`);
     assert.ok(statSync(join(SITE, name)).size > 200, `${name} is a real image`);
   }
-  // 15b: the large PNG is declared first.
+  // 15b, as amended 20 October 2026: the 192 PNG is declared first, and the .ico names its real
+  // sizes rather than `any`. Copied from the older convention the reference site still uses, which
+  // is how this site got it wrong the first time.
   const iconLinks = [...html.matchAll(/<link rel="icon"[^>]*sizes="([^"]+)"/g)].map((m) => m[1]);
-  assert.equal(iconLinks[0], '180x180', 'the large PNG is declared before the small ones');
+  assert.equal(iconLinks[0], '192x192', 'the 192 PNG is declared first');
+  assert.ok(!/sizes="any"/.test(html), 'the .ico names its sizes; `any` is retired');
+  assert.ok(existsSync(join(SITE, 'favicon-192.png')), 'favicon-192.png exists');
 });
 
 test('the manifest is small, valid and names this game', () => {
