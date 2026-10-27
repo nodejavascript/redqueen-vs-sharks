@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Red Queen vs. Laser Sharks">
+  <rect width="64" height="64" rx="12" fill="#2a0b12"/>
+  <polygon points="12.8,51.2 33.3,19.2 38.4,51.2" fill="#e22a22"/>
+  <line x1="6.4" y1="50.9" x2="57.6" y2="50.9" stroke="#ffcf6b" stroke-width="2.2" stroke-linecap="round"/>
+  <polygon points="21.1,18.2 24.6,12.1 27.2,16.4 32,9.6 36.8,16.4 39.4,12.1 42.9,18.2" fill="#ffcf6b"/>
+  <line x1="21.1" y1="18.2" x2="42.9" y2="18.2" stroke="#ffcf6b" stroke-width="1.8"/>
+</svg>

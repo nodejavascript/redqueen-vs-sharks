@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com</title>
+<meta name="description" content="Every shark that kills you had to look at you first. A Three.js arcade game on a sunset pier: one red queen, three lives, ten levels and a scoreboard the whole planet shares." />
+<link rel="canonical" href="https://redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com/" />
+<meta name="theme-color" content="#2a0b12" />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" type="image/png" sizes="180x180" href="/favicon-180.png" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com" />
+<meta property="og:title" content="Every shark that kills you had to look at you first" />
+<meta property="og:description" content="A Three.js arcade game on a sunset pier. One red queen, three lives, ten levels, and a scoreboard the whole planet shares." />
+<meta property="og:url" content="https://redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com/" />
+<meta property="og:image" content="https://redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Every shark that kills you had to look at you first" />
+<meta name="twitter:description" content="A Three.js arcade game on a sunset pier. One red queen, three lives, ten levels, and a scoreboard the whole planet shares." />
+<meta name="twitter:image" content="https://redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com/og.png" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Red Queen vs. Laser Sharks",
+  "url": "https://redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com/",
+  "description": "An arcade game on a sunset pier: one red queen, three lives, ten levels of sharks with laser beams bolted to their heads, and a scoreboard shared by every player.",
+  "genre": "Arcade",
+  "gamePlatform": "Web browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CAD" },
+  "isAccessibleForFree": true
+}
+</script>
+
+  /* ---------- the family shell ----------
+     Part 3 and part 4 of the site standard: a bar with the brand on it, a footer that names the
+     family and carries this site's own source. The game fills what is left, so the page is a site
+     with a game in it rather than a canvas pretending to be a page. */
+  html, body { height: 100%; }
+  body {
+    display: flex; flex-direction: column;
+    background: #12070a;
+  }
+  header.top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 18px; padding: 9px 18px; flex: 0 0 auto;
+    background: rgba(12, 5, 4, .92);
+    border-bottom: 1px solid rgba(255, 207, 107, .18);
+    position: relative; z-index: 20;
+  }
+  header.top .brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: #ffe9c9;
+  }
+  header.top .brand .mark { color: var(--gold); display: flex; }
+  header.top .brand b { display: block; font-size: 14px; letter-spacing: .06em; }
+  header.top .brand small { display: block; font-size: 10px; letter-spacing: .16em; opacity: .6; }
+  header.top nav { display: flex; gap: 16px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  header.top nav a { color: #ffe9c9; text-decoration: none; opacity: .72; }
+  header.top nav a:hover { opacity: 1; color: var(--gold); }
+  main#play { position: relative; flex: 1 1 auto; min-height: 0; }
+  main#play #app { position: absolute; inset: 0; }
+  footer.site-footer {
+    flex: 0 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 6px 18px; padding: 8px 18px; font-size: 10.5px; letter-spacing: .1em;
+    background: rgba(12, 5, 4, .92); border-top: 1px solid rgba(255, 207, 107, .18);
+    position: relative; z-index: 20;
+  }
+  footer.site-footer a { color: #ffe9c9; text-decoration: none; opacity: .78; }
+  footer.site-footer a:hover { opacity: 1; color: var(--gold); }
+  footer.site-footer .footer-brand { display: flex; align-items: center; gap: 8px; color: var(--gold); }
+  footer.site-footer .footer-brand b { color: #ffe9c9; }
+  footer.site-footer .footer-copy { opacity: .55; margin: 0; }
+  footer.site-footer p { margin: 0; }
+  @media (max-width: 760px) {
+    header.top nav { display: none; }
+    footer.site-footer { justify-content: center; text-align: center; }
+  }
+<style>
+  :root {
+    --gold: #ffcf6b;
+    --red: #ff3b30;
+    --ink: #1a0d08;
+    --panel: rgba(20, 8, 6, 0.86);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
+    background: #12070a;
+    font-family: "Courier New", ui-monospace, monospace;
+    color: #ffe9c9;
+    -webkit-font-smoothing: antialiased;
+  }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; width: 100%; height: 100%; }
+
+  /* ---------- HUD ---------- */
+  #hud {
+    position: absolute; inset: 0; pointer-events: none;
+    text-shadow: 0 0 12px rgba(255, 120, 40, .75), 0 2px 0 rgba(0,0,0,.6);
+  }
+  #hud .row { position: absolute; display: flex; gap: 22px; align-items: center; }
+  #hud .bl { bottom: 18px; left: 22px; font-size: 13px; opacity: .8; }
+  /* ---------- centre HUD, above the horizon ---------- */
+  #hud-center {
+    /* left/right 0, not left:50% — an absolutely positioned box only gets the space to its
+       right as available width, which squeezed this into two rows */
+    position: absolute; left: 0; right: 0; top: clamp(8px, 1.6vh, 20px);
+    display: flex; justify-content: center;
+    padding: 0 12px;
+    pointer-events: none; opacity: 0;
+  }
+  .hc-card {
+    display: flex; align-items: center; justify-content: center;
+    gap: 26px; row-gap: 10px; flex-wrap: wrap;
+    padding: 10px 26px 9px;
+    border-radius: 16px;
+    background: rgba(16, 7, 5, 0.55);
+    border: 1px solid rgba(255, 190, 110, 0.26);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 210, 160, 0.1);
+    -webkit-backdrop-filter: blur(7px) saturate(1.1);
+    backdrop-filter: blur(7px) saturate(1.1);
+  }
+
+  /* the volume slider is the one interactive thing in the HUD */
+  .hc-music { pointer-events: auto; }
+  .hc-vol { display: flex; align-items: center; gap: 8px; height: 32px; }
+  .vol-ico { font-size: 15px; color: var(--gold); opacity: .9; line-height: 1; }
+  #vol {
+    -webkit-appearance: none; appearance: none;
+    width: 92px; height: 4px; border-radius: 3px; outline: none; cursor: pointer;
+    background: linear-gradient(90deg, rgba(255,196,110,.9) 0%, rgba(255,196,110,.9) var(--fill, 50%), rgba(255,255,255,.18) var(--fill, 50%));
+  }
+  #vol::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 13px; height: 13px; border-radius: 50%;
+    background: #ffd88a; border: 1px solid rgba(90,20,0,.6);
+    box-shadow: 0 0 8px rgba(255,150,60,.8);
+  }
+  #vol::-moz-range-thumb {
+    width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(90,20,0,.6);
+    background: #ffd88a; box-shadow: 0 0 8px rgba(255,150,60,.8);
+  }
+  .hc-block { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: 0 0 auto; }
+  .hc-label {
+    font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
+    opacity: .92; white-space: nowrap; color: #ffe6c4;
+  }
+  .hc-icons {
+    display: flex; gap: 10px; align-items: center; justify-content: center;
+    min-height: 32px; flex-wrap: nowrap;
+  }
+  .hc-icons.dense { gap: 6px; }
+  .hc-icons.dense .shark-pip svg { width: 36px; height: 17px; }
+
+  .hc-score {
+    font-size: 46px; font-weight: 700; line-height: 1; letter-spacing: .04em;
+    color: var(--gold); min-width: 150px; text-align: center;
+    text-shadow: 0 0 22px rgba(255,140,40,.85), 0 0 60px rgba(255,120,30,.45), 0 3px 0 rgba(80,20,0,.55);
+    font-variant-numeric: tabular-nums;
+    transition: transform .1s ease;
+  }
+  .hc-div {
+    width: 1px; height: 46px;
+    background: linear-gradient(transparent, rgba(255,190,110,.5), transparent);
+  }
+
+  .queen-pip { transition: transform .25s ease, opacity .25s ease; }
+  .queen-pip svg { width: 34px; height: 31px; display: block; }
+  .queen-pip svg path, .queen-pip svg rect {
+    fill: var(--red); stroke: rgba(74, 0, 8, .65); stroke-width: 1.1; stroke-linejoin: round;
+  }
+  .queen-pip.lost { transform: scale(.8); opacity: .45; }
+  .queen-pip.lost svg path, .queen-pip.lost svg rect {
+    fill: rgba(255,140,110,.17);
+    filter: none;
+  }
+
+  .shark-pip { transition: transform .2s ease; }
+  .shark-pip svg { width: 56px; height: 26px; display: block; overflow: visible; }
+  .shark-pip .sh-body { fill: #b4141d; stroke: rgba(60, 0, 6, .8); stroke-width: 1.2; stroke-linejoin: round; }
+  .shark-pip .sh-fin, .shark-pip .sh-tail { fill: #8e0d14; stroke: rgba(60, 0, 6, .8); stroke-width: 1.2; stroke-linejoin: round; }
+  .shark-pip.gone { animation: pip-pop .42s ease forwards; }
+  @keyframes pip-pop {
+    0%   { transform: scale(1);   opacity: 1; }
+    30%  { transform: scale(1.6); opacity: 1; filter: drop-shadow(0 0 18px rgba(255,235,180,1)); }
+    100% { transform: scale(.35) translateY(-12px); opacity: 0; }
+  }
+  @media (max-width: 980px) {
+    .hc-score { font-size: 34px; min-width: 100px; }
+  }
+  @media (max-width: 720px) {
+    .hc-card { gap: 14px; padding: 8px 14px 7px; border-radius: 12px; }
+    #vol { width: 68px; }
+    .hc-score { font-size: 27px; min-width: 74px; }
+    .hc-icons.dense .shark-pip svg { width: 28px; height: 13px; }
+    .queen-pip svg { width: 24px; height: 22px; }
+    .shark-pip svg { width: 34px; height: 14px; }
+    .hc-label { font-size: 9px; letter-spacing: .18em; }
+  }
+  #bonus {
+    position: absolute; top: 96px; left: 50%; transform: translateX(-50%) scale(.9);
+    font-size: 20px; letter-spacing: .22em; color: #fff0b8; opacity: 0;
+    transition: opacity .12s ease, transform .12s ease;
+  }
+  #bonus.on { opacity: 1; transform: translateX(-50%) scale(1); }
+
+  /* ---------- crosshair ---------- */
+  #cross {
+    position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px;
+    border: 1px solid rgba(255, 235, 200, .55); border-radius: 50%;
+    pointer-events: none; transition: transform .06s ease, border-color .12s ease;
+  }
+  #cross::after {
+    content: ""; position: absolute; inset: 50% auto auto 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px;
+    background: var(--red); border-radius: 50%; box-shadow: 0 0 10px var(--red);
+  }
+  #cross.hot { border-color: var(--red); transform: scale(1.22); }
+
+  /* ---------- pause ---------- */
+  #pause { position: absolute; inset: 0; display: none; justify-items: center; align-items: start; padding-top: 150px; }
+  #pause.on { display: grid; }
+  #pause .badge {
+    display: grid; gap: 10px; justify-items: center; padding: 20px 34px;
+    background: var(--panel); border: 1px solid rgba(255, 207, 107, .45); border-radius: 14px;
+    text-shadow: none;
+  }
+  #pause .badge b { font-size: 24px; letter-spacing: .42em; color: var(--gold); }
+  #pause .badge span { font-size: 11px; letter-spacing: .18em; opacity: .72; }
+
+  /* ---------- screens ---------- */
+
+  /* ---------- the belief, first ---------- */
+  #scr-title h1 {
+    font-size: clamp(19px, 3.1vw, 30px); letter-spacing: .015em; line-height: 1.22;
+    text-transform: none; max-width: 34ch; margin: 0 auto 10px;
+  }
+  #scr-title .sub { letter-spacing: .16em; margin-bottom: 14px; }
+  .whylede {
+    max-width: 56ch; margin: 0 auto 22px; font-size: 13.5px; line-height: 1.62; opacity: .86;
+    text-align: left;
+  }
+  .screen {
+    position: absolute; inset: 0; display: none; place-items: center;
+    background: radial-gradient(circle at 50% 40%, rgba(60,10,10,.25), rgba(8,3,4,.9) 70%);
+    backdrop-filter: blur(2px); z-index: 10;
+  }
+  .screen.on { display: grid; }
+  .card {
+    width: min(720px, 92vw); padding: 30px 34px 26px;
+    background: var(--panel); border: 1px solid rgba(255, 190, 110, .35);
+    border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.6), inset 0 0 60px rgba(255,90,40,.08);
+    text-align: center;
+  }
+  h1 {
+    margin: 0 0 6px; font-size: clamp(26px, 5vw, 46px); letter-spacing: .12em;
+    color: #fff3d6; text-shadow: 0 0 26px rgba(255,80,40,.75), 0 0 60px rgba(255,140,40,.4);
+  }
+  h1 span { color: var(--red); }
+  .screenhead {
+    margin: 0 0 6px; font-size: clamp(26px, 5vw, 46px); letter-spacing: .12em; font-weight: 700;
+    color: #fff3d6; text-shadow: 0 0 26px rgba(255,80,40,.75), 0 0 60px rgba(255,140,40,.4);
+  }
+  .screenhead span { color: var(--red); }
+  .sub { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; opacity: .65; margin-bottom: 22px; }
+  .keys { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0 auto 24px; max-width: 520px;
+          font-size: 14px; text-align: left; }
+  .keys b { color: var(--gold); font-weight: 700; }
+  .keys i { font-style: normal; opacity: .85; }
+  button {
+    font-family: inherit; font-size: 15px; letter-spacing: .18em; text-transform: uppercase;
+    color: #2a0d06; background: linear-gradient(180deg, #ffd88a, #ff9f45);
+    border: 0; border-radius: 8px; padding: 13px 26px; cursor: pointer; font-weight: 700;
+    box-shadow: 0 6px 0 #8a3b12, 0 10px 24px rgba(0,0,0,.45);
+    transition: transform .06s ease, box-shadow .06s ease;
+  }
+  button:hover { transform: translateY(-1px); }
+  button:active { transform: translateY(3px); box-shadow: 0 2px 0 #8a3b12; }
+  button.ghost {
+    background: transparent; color: var(--gold); border: 1px solid rgba(255,190,110,.45);
+    box-shadow: none; font-weight: 400;
+  }
+  .btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* ---------- name entry ---------- */
+  #nameWrap { margin: 18px 0 8px; }
+  .slots { display: flex; gap: 18px; justify-content: center; align-items: flex-end; }
+  .slot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .slot .up, .slot .down {
+    width: 46px; height: 30px; padding: 0; border-radius: 6px; font-size: 13px;
+    background: rgba(255,190,110,.12); color: var(--gold); border: 1px solid rgba(255,190,110,.3);
+    box-shadow: none; cursor: pointer;
+  }
+  .slot .glyph {
+    width: 64px; height: 82px; display: grid; place-items: center;
+    font-size: 52px; font-weight: 700; color: #fff6df;
+    border-bottom: 3px solid rgba(255,190,110,.5);
+    background: rgba(255,255,255,.03);
+  }
+  .slot.active .glyph { border-bottom-color: var(--red); box-shadow: 0 12px 30px -18px var(--red); }
+  .hint { font-size: 12px; letter-spacing: .18em; opacity: .6; margin-top: 14px; }
+
+  /* ---------- scoreboard ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th { font-size: 10px; letter-spacing: .24em; text-transform: uppercase; opacity: .55; font-weight: 400; padding-bottom: 8px; }
+  td { padding: 7px 6px; border-top: 1px solid rgba(255,190,110,.12); }
+  td.rank { color: var(--gold); width: 46px; }
+  td.name { letter-spacing: .3em; color: #fff2d2; }
+  td.score { text-align: right; color: var(--gold); font-weight: 700; }
+  tr.me td { background: rgba(255,60,40,.15); }
+  tr.me td.name { color: #fff; }
+  #boardStatus { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; opacity: .55; margin-top: 14px; }
+  .empty { opacity: .5; padding: 26px 0; }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="https://nodejavascript.com/">
+    <span class="mark"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <path d="M16 4.5 19 11l7-1.6-3.6 5.4L27 19l-7.6.6L16 27l-3.4-7.4L5 19l4.6-4.2L6 9.4 13 11z" fill="currentColor" opacity=".9"/>
+        </svg></span>
+    <span><b>redqueen-vs-sharks</b><small>nodejavascript.com</small></span>
+  </a>
+  <nav>
+    <a href="#scr-board">High scores</a>
+    <a href="https://github.com/nodejavascript/redqueen-vs-sharks" rel="noopener"><svg class="gh-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="11" height="11" style="vertical-align:-1px;margin-right:4px"><path d="M12 2.4l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.6 6.1 20.7l1.2-6.6L2.4 9.4l6.7-.9z" fill="#ffcf6b"/></svg>Source</a>
+  </nav>
+</header>
+
+<main id="play"><div id="app"><div id="hud">
+    <div id="hud-center">
+     <div class="hc-card">
+      <div class="hc-block">
+        <div class="hc-icons" id="lives"></div>
+        <div class="hc-label">Queens</div>
+      </div>
+      <div class="hc-div"></div>
+      <div class="hc-block">
+        <div class="hc-score" id="score">0</div>
+        <div class="hc-label">Score · best <span id="best">0</span></div>
+      </div>
+      <div class="hc-div"></div>
+      <div class="hc-block">
+        <div class="hc-icons" id="sharks-left"></div>
+        <div class="hc-label">Sharks left · level <span id="level">1</span>/10</div>
+      </div>
+      <div class="hc-block hc-music">
+        <div class="hc-vol">
+          <span class="vol-ico">♪</span>
+          <input id="vol" type="range" min="0" max="100" step="1" value="50"
+                 aria-label="Music volume" />
+        </div>
+        <div class="hc-label">Music <span id="volpct">50%</span></div>
+      </div>
+     </div>
+    </div>
+    <div class="row bl">
+      <span>Move: <b>W</b>/<b>S</b> or <b>↑</b>/<b>↓</b> &nbsp;·&nbsp; Shoot: <b>click</b>/<b>space</b> &nbsp;·&nbsp; Pause: <b>P</b> &nbsp;·&nbsp; Eye = 100 &nbsp;·&nbsp; eye while its laser is lit = <b>300</b> &nbsp;·&nbsp; never stand in a shark's beam</span>
+    </div>
+    <div id="bonus">EYE SHOT ×3</div>
+    <div id="pause"><div class="badge"><b>PAUSED</b><span>press P to carry on</span></div></div>
+  </div>
+  <div id="cross"></div>
+
+  <!-- title -->
+  <div class="screen on" id="scr-title">
+    <div class="card">
+      <h1>Every shark that kills you had to look at you first</h1>
+      <div class="sub">Red Queen vs. Laser Sharks · a Three.js arcade game, ten levels, one shared board</div>
+      <p class="whylede">
+        Fairness is a design decision, not a difficulty slider. So no shark here can point a laser at
+        you without turning its head to find you first, and a head turns slowly and not very far.
+        Every death is a shot you could have seen coming — which is also why the fair shot is the
+        one worth three hundred.
+      </p>
+      <div class="keys">
+        <b>W / S</b><i>walk up and down the dock</i>
+        <b>Mouse</b><i>aim, <b>click</b> (or space) to fire</i>
+        <b>Surface</b><i>sharks stay under, only a fin showing. Their head comes up for a few seconds — that is your shot.</i>
+        <b>Eye</b><i>shoot a shark in the eye — 100 points, 300 while its laser is glowing</i>
+        <b>Beam</b><i>the laser is bolted to the head, so it points where the head points. Never stand in the red line.</i>
+        <b>Ten levels</b><i>level one is gentle. They get faster, they stay up longer, and fewer of them miss.</i>
+      </div>
+      <div class="btns">
+        <button id="btn-play">Play</button>
+        <button class="ghost" id="btn-board">High Scores</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- level cleared -->
+  <div class="screen" id="scr-level">
+    <div class="card">
+      <h2 class="screenhead" id="lvTitle">LEVEL 1 CLEAR</h2>
+      <div class="sub" id="lvSub"></div>
+      <div style="font-size:38px;font-weight:700;color:var(--gold)" id="lvBonus">+500</div>
+      <div class="label" style="margin-top:4px" id="lvNote">+1 queen restored</div>
+      <div class="btns" style="margin-top:20px"><button id="btn-next">Continue</button></div>
+    </div>
+  </div>
+
+  <!-- game over + initials -->
+  <div class="screen" id="scr-over">
+    <div class="card">
+      <h2 class="screenhead" id="overTitle">GAME OVER</h2>
+      <div class="sub" id="overSub">The sharks win this one</div>
+      <div style="font-size:44px;font-weight:700;color:var(--gold)" id="finalScore">0</div>
+      <div class="label" style="margin-top:4px">Final score</div>
+      <div id="nameWrap">
+        <div class="slots" id="slots">
+          <div class="slot active" data-i="0">
+            <button class="up" data-d="1">▲</button><div class="glyph">A</div><button class="down" data-d="-1">▼</button>
+          </div>
+          <div class="slot" data-i="1">
+            <button class="up" data-d="1">▲</button><div class="glyph">A</div><button class="down" data-d="-1">▼</button>
+          </div>
+          <div class="slot" data-i="2">
+            <button class="up" data-d="1">▲</button><div class="glyph">A</div><button class="down" data-d="-1">▼</button>
+          </div>
+        </div>
+        <div class="hint">type 3 letters · backspace to fix · enter to submit</div>
+      </div>
+      <div class="btns">
+        <button id="btn-submit">Save score</button>
+        <button class="ghost" id="btn-skip">Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- scoreboard -->
+  <div class="screen" id="scr-board">
+    <div class="card">
+      <h2 class="screenhead">HIGH <span>SCORES</span></h2>
+      <div class="sub">Everyone, everywhere, same board</div>
+      <div id="boardBody"><div class="empty">Nobody yet. Be the first queen.</div></div>
+      <div id="boardStatus">live · updates every 1.5s · 0 on the board</div>
+      <div class="btns" style="margin-top:22px">
+        <button id="btn-again">Play again</button>
+        <button class="ghost" id="btn-close">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div></main>
+<script type="module" src="./game.js"></script>
+<script>
+  // visible failure instead of a silent black screen
+  window.addEventListener('error', (e) => {
+    const d = document.createElement('div');
+    d.id = 'boot-error';
+    d.style.cssText = 'position:fixed;inset:auto 0 0 0;padding:12px;background:#7a0d0d;color:#fff;font:12px monospace;z-index:99';
+    d.textContent = 'ERROR: ' + (e.message || e.error);
+    document.body.appendChild(d);
+    document.title = 'BOOT ERROR: ' + (e.message || e.error);
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+    document.title = 'BOOT ERROR: ' + (e.reason && e.reason.message || e.reason);
+  });
+</script>
+
+<footer class="site-footer">
+  <div class="footer-brand">
+    <span class="mark"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <path d="M16 4.5 19 11l7-1.6-3.6 5.4L27 19l-7.6.6L16 27l-3.4-7.4L5 19l4.6-4.2L6 9.4 13 11z" fill="currentColor" opacity=".9"/>
+        </svg></span>
+    <span><b>redqueen-vs-sharks</b> · <a href="https://nodejavascript.com/">nodejavascript.com</a></span>
+  </div>
+  <p><a href="/privacy">Privacy</a></p>
+  <p><a href="https://github.com/nodejavascript/redqueen-vs-sharks" rel="noopener"><svg class="gh-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="12" height="12" style="vertical-align:-1px;margin-right:5px"><path d="M12 2.4l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.6 6.1 20.7l1.2-6.6L2.4 9.4l6.7-.9z" fill="#ffcf6b"/></svg>github.com/nodejavascript/redqueen-vs-sharks</a></p>
+  <p class="footer-copy">© 2026 redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "redqueen-vs-sharks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Every shark that kills you had to look at you first. A Three.js arcade game on a sunset pier.",
+  "engines": { "node": "22" },
+  "scripts": {
+    "serve": "node server/server.js",
+    "dev": "node server/server.js",
+    "test": "node --test test/units.test.js test/static.test.js",
+    "test:e2e": "node --test test/e2e.test.js",
+    "test:all": "node --test test/*.test.js",
+    "deploy": "bash tools/deploy.sh"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

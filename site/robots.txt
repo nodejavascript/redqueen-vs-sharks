@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://redqueen-vs-sharks-with-laser-beams-attached-to-their-heads.nodejavascript.com/sitemap.xml
